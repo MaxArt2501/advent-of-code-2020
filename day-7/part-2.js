@@ -12,3 +12,5 @@ function getContained(container) {
   const rule = rules[container];
   return rule.reduce((total, { quantity, color }) => total + quantity + quantity * getContained(color), 0);
 }
+
+console.log(getContained('shiny gold'));
