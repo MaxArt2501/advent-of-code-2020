@@ -4,6 +4,7 @@ function getResult(instructionSet) {
   let accumulator = 0;
   let ip = 0;
   const executed = new Set();
+  // If the Instruction Pointer doesn't point to an instructions, we've reached the end
   while (ip in instructionSet && !executed.has(instructionSet[ip])) {
     executed.add(instructionSet[ip]);
     if (instructionSet[ip].opcode === 'acc') {
@@ -24,13 +25,11 @@ for (let index = 0; index < instructions.length; index++) {
   if (opcode === 'acc') {
     continue;
   }
-  const newOpcode = opcode === 'nop' ? 'jmp' : 'nop';
-  const instructionSet = [
+  const result = getResult([
     ...instructions.slice(0, index),
-    { opcode: newOpcode, value },
+    { opcode: opcode === 'nop' ? 'jmp' : 'nop', value },
     ...instructions.slice(index + 1)
-  ];
-  const result = getResult(instructionSet);
+  ]);
   if (!isNaN(result)) {
     console.log(result);
     break;
