@@ -1,5 +1,4 @@
 const busList = input.slice(input.indexOf('\n')).split(',');
-const buses = busList.map(Number).filter(Boolean);
 
 /**
  * How does this works? Iteratively, each bus must depart a multiple of the product
