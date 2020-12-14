@@ -2,7 +2,7 @@ const busList = input.slice(input.indexOf('\n')).split(',');
 
 /**
  * How does this work? Iteratively, each bus must depart a multiple of the product
- * of the previous bus. It should be a multiple of the least common multiple, but all
+ * of the previous buses. It should be a multiple of the least common multiple, but all
  * the id's should be primes (or co-prime).
  * Mathematically speaking, we're trying to solve a bunch of linear Diophantine equations.
  */
