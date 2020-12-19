@@ -1,20 +1,22 @@
 const [ ruleList, ticket, ticketList ] = input.trim().split(/\s+(?:your|nearby) tickets?:\n/);
+const splitLine = (separator = ',') => line => line.split(separator).map(Number);
+const areAllInIntervals = intervals => list => list.every(num => intervals.some(([ min, max ]) => num >= min && num <= max));
 
 const rules = ruleList.split('\n').map(line => {
   const [ field, intervalList ] = line.split(': ');
-  const intervals = intervalList.split(' or ').map(int => int.split('-').map(Number));
+  const intervals = intervalList.split(' or ').map(splitLine('-'));
   return { field, intervals };
 });
 const allIntervals = rules.flatMap(({ intervals }) => intervals);
 
-const tickets = ticketList.split('\n').map(line => line.split(',').map(Number));
-const validTickets = tickets.filter(list => list.every(num => allIntervals.some(([ min, max ]) => num >= min && num <= max)));
+const tickets = ticketList.split('\n').map(splitLine());
+const validTickets = tickets.filter(areAllInIntervals(allIntervals));
 
 const values = ticket.split(',').map(Number);
 // All the possibile fields for each value in every ticket
 let possibleFields = values.map((_, index) => {
   const column = validTickets.map(list => list[index]);
-  return rules.filter(({ intervals }) => column.every(num => intervals.some(([ min, max ]) => num >= min && num <= max))).map(({ field }) => field);
+  return rules.filter(({ intervals }) => areAllInIntervals(intervals)(column)).map(({ field }) => field);
 });
 
 // So far, so good. Now, the possibile fields for the values of the ticket might be more than one,
